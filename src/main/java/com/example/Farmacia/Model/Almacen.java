@@ -11,5 +11,32 @@ public class Almacen {
     @Column(length = 50)
     private String nombreAlmac;
 
-    // Puedes agregar nombre o ubicación si lo necesitas
+    // constructor
+
+    public Almacen() {
+    }
+
+    public Almacen(Integer idAlmacen, String nombreAlmac) {
+        this.idAlmacen = idAlmacen;
+        this.nombreAlmac = nombreAlmac;
+    }
+
+    // getter y Setter
+
+
+    public Integer getIdAlmacen() {
+        return idAlmacen;
+    }
+
+    public void setIdAlmacen(Integer idAlmacen) {
+        this.idAlmacen = idAlmacen;
+    }
+
+    public String getNombreAlmac() {
+        return nombreAlmac;
+    }
+
+    public void setNombreAlmac(String nombreAlmac) {
+        this.nombreAlmac = nombreAlmac;
+    }
 }

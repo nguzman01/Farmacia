@@ -1,4 +1,9 @@
 package com.example.Farmacia.Repository;
 
-public interface CategoriaRepository {
+import com.example.Farmacia.Model.Categoria;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 }

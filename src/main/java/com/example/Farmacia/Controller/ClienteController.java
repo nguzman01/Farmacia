@@ -1,4 +1,49 @@
 package com.example.Farmacia.Controller;
 
+import com.example.Farmacia.Model.Cliente;
+import com.example.Farmacia.Service.ClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/cliente")
 public class ClienteController {
+
+    @Autowired
+    private ClienteService clienteService;
+
+    @GetMapping
+    public List<Cliente> getAll() {
+        return clienteService.findAll();
+    }
+    // lista por id
+    @GetMapping("/{id}")
+    public ResponseEntity<Cliente> getById(@PathVariable Long id) {
+        Optional<Cliente> cliente = clienteService.findById(id);
+        return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public Cliente create(@RequestBody Cliente cliente) {
+        return clienteService.save(cliente);
+    }
+    //actualiza
+    @PutMapping("/{id}")
+    public ResponseEntity<Cliente> update(@PathVariable Long id, @RequestBody Cliente clienteDetails) {
+        Cliente updatedCliente = clienteService.update(id, clienteDetails);
+        if (updatedCliente == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedCliente);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        clienteService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -29,5 +29,86 @@ public class Empleado {
     @Column(length = 10)
     private String contraseña;
 
+    // constructores
+
+    public Empleado() {
+    }
+
+    public Empleado(long id_Empleado, String nombreEmpl, String direccionEmpl, String emailEmpl, String telefonoEmpl, LocalTime horaEntrada, LocalTime horaSalida, String contraseña) {
+        this.id_Empleado = id_Empleado;
+        this.nombreEmpl = nombreEmpl;
+        this.direccionEmpl = direccionEmpl;
+        this.emailEmpl = emailEmpl;
+        this.telefonoEmpl = telefonoEmpl;
+        this.horaEntrada = horaEntrada;
+        this.horaSalida = horaSalida;
+        this.contraseña = contraseña;
+    }
+
     // Getters y setters
+
+
+    public long getId_Empleado() {
+        return id_Empleado;
+    }
+
+    public void setId_Empleado(long id_Empleado) {
+        this.id_Empleado = id_Empleado;
+    }
+
+    public String getNombreEmpl() {
+        return nombreEmpl;
+    }
+
+    public void setNombreEmpl(String nombreEmpl) {
+        this.nombreEmpl = nombreEmpl;
+    }
+
+    public String getDireccionEmpl() {
+        return direccionEmpl;
+    }
+
+    public void setDireccionEmpl(String direccionEmpl) {
+        this.direccionEmpl = direccionEmpl;
+    }
+
+    public String getEmailEmpl() {
+        return emailEmpl;
+    }
+
+    public void setEmailEmpl(String emailEmpl) {
+        this.emailEmpl = emailEmpl;
+    }
+
+    public String getTelefonoEmpl() {
+        return telefonoEmpl;
+    }
+
+    public void setTelefonoEmpl(String telefonoEmpl) {
+        this.telefonoEmpl = telefonoEmpl;
+    }
+
+    public LocalTime getHoraEntrada() {
+        return horaEntrada;
+    }
+
+    public void setHoraEntrada(LocalTime horaEntrada) {
+        this.horaEntrada = horaEntrada;
+    }
+
+    public LocalTime getHoraSalida() {
+        return horaSalida;
+    }
+
+    public void setHoraSalida(LocalTime horaSalida) {
+        this.horaSalida = horaSalida;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
 }

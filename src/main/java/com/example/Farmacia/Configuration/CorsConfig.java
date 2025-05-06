@@ -18,7 +18,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
                         // Permitir solicitudes desde el emulador
-                        .allowedOrigins("http://10.0.2.2:8081")
+                        .allowedOrigins("http://10.0.2.2:8080")
                         .allowedMethods("GET", "POST", "PUT", "DELETE");
             }
         };

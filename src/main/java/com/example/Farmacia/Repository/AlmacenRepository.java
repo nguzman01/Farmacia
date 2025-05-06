@@ -1,4 +1,9 @@
 package com.example.Farmacia.Repository;
 
-public interface AlmacenRepository {
+import com.example.Farmacia.Model.Almacen;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AlmacenRepository extends JpaRepository<Almacen, Integer> {
 }
