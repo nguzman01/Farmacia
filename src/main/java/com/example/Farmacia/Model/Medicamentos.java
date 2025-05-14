@@ -10,7 +10,7 @@ public class Medicamentos {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idMedicamento;
+    private long idMedicamento;
 
     @Column(length = 50)
     private String nombreMed;
@@ -29,10 +29,12 @@ public class Medicamentos {
     private String codigo;
 
     @ManyToOne
+            //(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_marca")
     private Marca marca;
 
     @ManyToOne
+            //(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
@@ -41,7 +43,7 @@ public class Medicamentos {
     public Medicamentos() {
     }
 
-    public Medicamentos(Integer idMedicamento, String nombreMed, LocalDate fechaRegistro, String presentacion, String descripcion, Double precio, String codigo, Marca marca, Categoria categoria) {
+    public Medicamentos(long idMedicamento, String nombreMed, LocalDate fechaRegistro, String presentacion, String descripcion, Double precio, String codigo, Marca marca, Categoria categoria) {
         this.idMedicamento = idMedicamento;
         this.nombreMed = nombreMed;
         this.fechaRegistro = fechaRegistro;
@@ -56,11 +58,11 @@ public class Medicamentos {
     // Getters y setters
 
 
-    public Integer getIdMedicamento() {
+    public long getIdMedicamento() {
         return idMedicamento;
     }
 
-    public void setIdMedicamento(Integer idMedicamento) {
+    public void setIdMedicamento(long idMedicamento) {
         this.idMedicamento = idMedicamento;
     }
 

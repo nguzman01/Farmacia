@@ -13,15 +13,15 @@ public class CompraService {
     @Autowired
     private CompraRepository compraRepository;
 
-    public List<Compra> findAll() {
+    public List<Compra> listarCompras() {
         return compraRepository.findAll();
     }
 
-    public Optional<Compra> findById(Long id) {
+    public Optional<Compra> listarCompraPorId(Long id) {
         return compraRepository.findById(id);
     }
 
-    public Compra save(Compra compra) {
+    public Compra crearCompra(Compra compra) {
         if (compra.getFechaCompra() == null) {
             throw new IllegalArgumentException("La fecha de compra es requerida");
         }
@@ -35,7 +35,7 @@ public class CompraService {
 
 
 
-    public Compra update(Long id, Compra compraDetails) {
+    public Compra actualizarCompra(Long id, Compra compraDetails) {
         Optional<Compra> optionalCompra = compraRepository.findById(id);
         if (optionalCompra.isEmpty()) {
             return null;
@@ -56,7 +56,7 @@ public class CompraService {
         return compraRepository.save(compra);
     }
 
-    public void deleteById(Long id) {
+    public void eliminarCompraPorId(Long id) {
         if (!compraRepository.existsById(id)) {
             throw new IllegalArgumentException("La compra con id " + id + " no existe.");
         }

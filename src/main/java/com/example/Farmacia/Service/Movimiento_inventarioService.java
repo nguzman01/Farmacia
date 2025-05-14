@@ -1,6 +1,8 @@
 package com.example.Farmacia.Service;
 
+import com.example.Farmacia.Model.Inventario;
 import com.example.Farmacia.Model.Movimiento_inventario;
+import com.example.Farmacia.Repository.InventarioRepository;
 import com.example.Farmacia.Repository.Movimiento_inventarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,15 +16,19 @@ public class Movimiento_inventarioService {
     @Autowired
     private Movimiento_inventarioRepository movimientoInventarioRepository;
 
-    public List<Movimiento_inventario> findAll() {
+    @Autowired
+    private InventarioRepository inventarioRepository;
+
+    public List<Movimiento_inventario> listarMovimientosInventario() {
         return movimientoInventarioRepository.findAll();
     }
 
-    public Optional<Movimiento_inventario> findById(Long id) {
+    public Optional<Movimiento_inventario> listarMovimientoInventarioPorId(Long id) {
         return movimientoInventarioRepository.findById(id);
     }
 
-    public Movimiento_inventario save(Movimiento_inventario movimientoInventario) {
+    public Movimiento_inventario crearMovimientoInventario(Movimiento_inventario movimientoInventario) {
+        // Validaciones previas
         if (movimientoInventario.getTipoMovi() == null || movimientoInventario.getTipoMovi().trim().isEmpty()) {
             throw new IllegalArgumentException("El tipo de movimiento es requerido.");
         }
@@ -35,19 +41,29 @@ public class Movimiento_inventarioService {
         if (movimientoInventario.getFechaMovi() == null) {
             throw new IllegalArgumentException("La fecha del movimiento es requerida.");
         }
-        if (movimientoInventario.getInventario() == null) {
+        if (movimientoInventario.getInventario() == null || movimientoInventario.getInventario().getId_inventario() == null) {
             throw new IllegalArgumentException("El inventario es requerido.");
         }
+
+        // Verificar si el inventario existe
+        Inventario inventario = inventarioRepository.findById(movimientoInventario.getInventario().getId_inventario())
+                .orElseThrow(() -> new IllegalArgumentException("El inventario con ID " + movimientoInventario.getInventario().getId_inventario() + " no existe."));
+
+        // Asociar el inventario persistido al movimiento
+        movimientoInventario.setInventario(inventario);
+
+        // Guardar el movimiento de inventario
         return movimientoInventarioRepository.save(movimientoInventario);
     }
 
-    public Movimiento_inventario update(Long id, Movimiento_inventario movimientoInventarioDetails) {
+    public Movimiento_inventario actualizarMovimientoInventario(Long id, Movimiento_inventario movimientoInventarioDetails) {
         Optional<Movimiento_inventario> optionalMovimiento = movimientoInventarioRepository.findById(id);
         if (optionalMovimiento.isEmpty()) {
             return null;
         }
         Movimiento_inventario movimientoInventario = optionalMovimiento.get();
 
+        // Validaciones para la actualización
         if (movimientoInventarioDetails.getTipoMovi() == null || movimientoInventarioDetails.getTipoMovi().trim().isEmpty()) {
             throw new IllegalArgumentException("El tipo de movimiento es requerido.");
         }
@@ -64,16 +80,21 @@ public class Movimiento_inventarioService {
             throw new IllegalArgumentException("El inventario es requerido.");
         }
 
+        // Verificar si el inventario existe
+        Inventario inventario = inventarioRepository.findById(movimientoInventarioDetails.getInventario().getId_inventario())
+                .orElseThrow(() -> new IllegalArgumentException("El inventario con ID " + movimientoInventarioDetails.getInventario().getId_inventario() + " no existe."));
+
+        // Actualizar los detalles del movimiento de inventario
         movimientoInventario.setTipoMovi(movimientoInventarioDetails.getTipoMovi());
         movimientoInventario.setCantidad(movimientoInventarioDetails.getCantidad());
         movimientoInventario.setFechaMovi(movimientoInventarioDetails.getFechaMovi());
         movimientoInventario.setReferencia(movimientoInventarioDetails.getReferencia());
-        movimientoInventario.setInventario(movimientoInventarioDetails.getInventario());
+        movimientoInventario.setInventario(inventario);
 
         return movimientoInventarioRepository.save(movimientoInventario);
     }
 
-    public void deleteById(Long id) {
+    public void eliminarMovimientoInventarioPorId(Long id) {
         if (!movimientoInventarioRepository.existsById(id)) {
             throw new IllegalArgumentException("El movimiento de inventario con id " + id + " no existe.");
         }

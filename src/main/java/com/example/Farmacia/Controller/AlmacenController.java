@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/almacen")
+@RequestMapping("/api/almacen")
 public class AlmacenController {
 
 
@@ -20,23 +20,23 @@ public class AlmacenController {
 
     @GetMapping
     public List<Almacen> getAll() {
-        return almacenService.findAll();
+        return almacenService.listarAlmacenes();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Almacen> getById(@PathVariable Integer id) {
-        Optional<Almacen> almacen = almacenService.findById(id);
+        Optional<Almacen> almacen = almacenService.listarAlmacenPorId(id);
         return almacen.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Almacen create(@RequestBody Almacen almacen) {
-        return almacenService.save(almacen);
+        return almacenService.crearAlmacen(almacen);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Almacen> update(@PathVariable Integer id, @RequestBody Almacen almacenDetails) {
-        Almacen updatedAlmacen = almacenService.update(id, almacenDetails);
+        Almacen updatedAlmacen = almacenService.actualizarAlmacen(id, almacenDetails);
         if (updatedAlmacen == null) {
             return ResponseEntity.notFound().build();
         }
@@ -45,7 +45,7 @@ public class AlmacenController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        almacenService.deleteById(id);
+        almacenService.eliminarAlmacenPorId(id);
         return ResponseEntity.noContent().build();
     }
 }

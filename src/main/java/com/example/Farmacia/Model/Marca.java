@@ -17,6 +17,7 @@ public class Marca {
     private String descripcion;
 
     @ManyToOne
+            //(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_proveedor")
     private Proveedor proveedor;
 

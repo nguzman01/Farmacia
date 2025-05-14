@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("/api/cliente")
 public class ClienteController {
 
     @Autowired
@@ -18,23 +18,23 @@ public class ClienteController {
 
     @GetMapping
     public List<Cliente> getAll() {
-        return clienteService.findAll();
+        return clienteService.listarClientes();
     }
     // lista por id
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> getById(@PathVariable Long id) {
-        Optional<Cliente> cliente = clienteService.findById(id);
+        Optional<Cliente> cliente = clienteService.listarClientePorId(id);
         return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Cliente create(@RequestBody Cliente cliente) {
-        return clienteService.save(cliente);
+        return clienteService.crearCliente(cliente);
     }
     //actualiza
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> update(@PathVariable Long id, @RequestBody Cliente clienteDetails) {
-        Cliente updatedCliente = clienteService.update(id, clienteDetails);
+        Cliente updatedCliente = clienteService.actualizarCliente(id, clienteDetails);
         if (updatedCliente == null) {
             return ResponseEntity.notFound().build();
         }
@@ -43,7 +43,7 @@ public class ClienteController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        clienteService.deleteById(id);
+        clienteService.eliminarClientePorId(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/lote")
+@RequestMapping("/api/lote")
 public class LoteController {
 
     @Autowired
@@ -18,23 +18,23 @@ public class LoteController {
 
     @GetMapping
     public List<Lote> getAll() {
-        return loteService.findAll();
+        return loteService.listarLotes();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Lote> getById(@PathVariable Integer id) {
-        Optional<Lote> lote = loteService.findById(id);
+        Optional<Lote> lote = loteService.listarLotePorId(id);
         return lote.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Lote create(@RequestBody Lote lote) {
-        return loteService.save(lote);
+        return loteService.crearLote(lote);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Lote> update(@PathVariable Integer id, @RequestBody Lote loteDetails) {
-        Lote updatedLote = loteService.update(id, loteDetails);
+        Lote updatedLote = loteService.actualizarLote(id, loteDetails);
         if (updatedLote == null) {
             return ResponseEntity.notFound().build();
         }
@@ -43,7 +43,7 @@ public class LoteController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        loteService.deleteById(id);
+        loteService.eliminarLotePorId(id);
         return ResponseEntity.noContent().build();
     }
 

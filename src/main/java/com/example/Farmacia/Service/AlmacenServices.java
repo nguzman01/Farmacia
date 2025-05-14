@@ -14,15 +14,15 @@ public class AlmacenServices {
     @Autowired
     private AlmacenRepository almacenRepository;
 
-    public List<Almacen> findAll() {
+    public List<Almacen> listarAlmacenes() {
         return almacenRepository.findAll();
     }
 
-    public Optional<Almacen> findById(Integer id) {
+    public Optional<Almacen> listarAlmacenPorId(Integer id) {
         return almacenRepository.findById(id);
     }
 
-    public Almacen save(Almacen almacen) {
+    public Almacen crearAlmacen(Almacen almacen) {
 
         if (almacen.getNombreAlmac() == null || almacen.getNombreAlmac().isEmpty()) {
             throw new IllegalArgumentException("El nombre del almacén es requerido");
@@ -30,7 +30,7 @@ public class AlmacenServices {
         return almacenRepository.save(almacen);
     }
 
-    public Almacen update(Integer id, Almacen almacenDetails) {
+    public Almacen actualizarAlmacen(Integer id, Almacen almacenDetails) {
         Optional<Almacen> optionalAlmacen = almacenRepository.findById(id);
         if (optionalAlmacen.isEmpty()) {
             return null;
@@ -46,7 +46,7 @@ public class AlmacenServices {
         return almacenRepository.save(almacen);
     }
 
-    public void deleteById(Integer id) {
+    public void eliminarAlmacenPorId(Integer id) {
         if(!almacenRepository.existsById(id)) {
             throw new IllegalArgumentException("El almacén con id " + id + " no existe.");
         }

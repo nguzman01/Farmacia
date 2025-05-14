@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/inventario")
+@RequestMapping("/api/inventario")
 public class InventarioController {
 
     @Autowired
@@ -18,23 +18,23 @@ public class InventarioController {
 
     @GetMapping
     public List<Inventario> getAll() {
-        return inventarioService.findAll();
+        return inventarioService.listarInventarios();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Inventario> getById(@PathVariable Long id) {
-        Optional<Inventario> inventario = inventarioService.findById(id);
+        Optional<Inventario> inventario = inventarioService.listarInventarioPorId(id);
         return inventario.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Inventario create(@RequestBody Inventario inventario) {
-        return inventarioService.save(inventario);
+        return inventarioService.crearInventario(inventario);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Inventario> update(@PathVariable Long id, @RequestBody Inventario inventarioDetails) {
-        Inventario updatedInventario = inventarioService.update(id, inventarioDetails);
+        Inventario updatedInventario = inventarioService.actualizarInventario(id, inventarioDetails);
         if (updatedInventario == null) {
             return ResponseEntity.notFound().build();
         }
@@ -43,7 +43,7 @@ public class InventarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        inventarioService.deleteById(id);
+        inventarioService.eliminarInventarioPorId(id);
         return ResponseEntity.noContent().build();
     }
 }

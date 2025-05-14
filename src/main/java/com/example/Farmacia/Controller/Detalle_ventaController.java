@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 @RestController
-@RequestMapping("/detalle-venta")
+@RequestMapping("/api/detalle-venta")
 
 public class Detalle_ventaController {
 
@@ -18,23 +18,23 @@ public class Detalle_ventaController {
 
     @GetMapping
     public List<Detalle_venta> getAll() {
-        return detalleVentaService.findAll();
+        return detalleVentaService.listarDetalleVentas();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Detalle_venta> getById(@PathVariable Long id) {
-        Optional<Detalle_venta> detalleVenta = detalleVentaService.findById(id);
+        Optional<Detalle_venta> detalleVenta = detalleVentaService.listarDetalleVentaPorId(id);
         return detalleVenta.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Detalle_venta create(@RequestBody Detalle_venta detalleVenta) {
-        return detalleVentaService.save(detalleVenta);
+        return detalleVentaService.crearDetalleVenta(detalleVenta);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Detalle_venta> update(@PathVariable Long id, @RequestBody Detalle_venta detalleVentaDetails) {
-        Detalle_venta updatedDetalleVenta = detalleVentaService.update(id, detalleVentaDetails);
+        Detalle_venta updatedDetalleVenta = detalleVentaService.actualizarDetalleVenta(id, detalleVentaDetails);
         if (updatedDetalleVenta == null) {
             return ResponseEntity.notFound().build();
         }
@@ -43,7 +43,7 @@ public class Detalle_ventaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        detalleVentaService.deleteById(id);
+        detalleVentaService.eliminarDetalleVentaPorId(id);
         return ResponseEntity.noContent().build();
     }
 }

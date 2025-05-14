@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/detalle-compra")
+@RequestMapping("/api/detalle-compra")
 public class Detalle_compraController {
 
     @Autowired
@@ -18,23 +18,23 @@ public class Detalle_compraController {
 
     @GetMapping
     public List<Detalle_compra> getAll() {
-        return detalleCompraService.findAll();
+        return detalleCompraService.listarDetalleCompras();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Detalle_compra> getById(@PathVariable Long id) {
-        Optional<Detalle_compra> detalleCompra = detalleCompraService.findById(id);
+        Optional<Detalle_compra> detalleCompra = detalleCompraService.listarDetalleCompraPorId(id);
         return detalleCompra.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Detalle_compra create(@RequestBody Detalle_compra detalleCompra) {
-        return detalleCompraService.save(detalleCompra);
+        return detalleCompraService.crearDetalleCompra(detalleCompra);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Detalle_compra> update(@PathVariable Long id, @RequestBody Detalle_compra detalleCompraDetails) {
-        Detalle_compra updatedDetalleCompra = detalleCompraService.update(id, detalleCompraDetails);
+        Detalle_compra updatedDetalleCompra = detalleCompraService.actualizarDetalleCompra(id, detalleCompraDetails);
         if (updatedDetalleCompra == null) {
             return ResponseEntity.notFound().build();
         }
@@ -43,7 +43,7 @@ public class Detalle_compraController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        detalleCompraService.deleteById(id);
+        detalleCompraService.eliminarDetalleCompraPorId(id);
         return ResponseEntity.noContent().build();
     }
 }

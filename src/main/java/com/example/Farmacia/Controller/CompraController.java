@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 @RestController
-@RequestMapping("/compra")
+@RequestMapping("/api/compra")
 public class CompraController {
 
 
@@ -19,23 +19,23 @@ public class CompraController {
 
     @GetMapping
     public List<Compra> getAll() {
-        return compraService.findAll();
+        return compraService.listarCompras();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Compra> getById(@PathVariable Long id) {
-        Optional<Compra> compra = compraService.findById(id);
+        Optional<Compra> compra = compraService.listarCompraPorId(id);
         return compra.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Compra create(@RequestBody Compra compra) {
-        return compraService.save(compra);
+        return compraService.crearCompra(compra);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Compra> update(@PathVariable Long id, @RequestBody Compra compraDetails) {
-        Compra updatedCompra = compraService.update(id, compraDetails);
+        Compra updatedCompra = compraService.actualizarCompra(id, compraDetails);
         if (updatedCompra == null) {
             return ResponseEntity.notFound().build();
         }
@@ -44,7 +44,7 @@ public class CompraController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        compraService.deleteById(id);
+        compraService.eliminarCompraPorId(id);
         return ResponseEntity.noContent().build();
     }
 }

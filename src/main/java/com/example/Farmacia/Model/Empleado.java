@@ -9,7 +9,8 @@ public class Empleado {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_Empleado;
+
+    private long idEmpleado;
 
     @Column(length = 50)
     private String nombreEmpl;
@@ -34,8 +35,8 @@ public class Empleado {
     public Empleado() {
     }
 
-    public Empleado(long id_Empleado, String nombreEmpl, String direccionEmpl, String emailEmpl, String telefonoEmpl, LocalTime horaEntrada, LocalTime horaSalida, String contraseña) {
-        this.id_Empleado = id_Empleado;
+    public Empleado(long idEmpleado, String nombreEmpl, String direccionEmpl, String emailEmpl, String telefonoEmpl, LocalTime horaEntrada, LocalTime horaSalida, String contraseña) {
+        this.idEmpleado = idEmpleado;
         this.nombreEmpl = nombreEmpl;
         this.direccionEmpl = direccionEmpl;
         this.emailEmpl = emailEmpl;
@@ -49,11 +50,11 @@ public class Empleado {
 
 
     public long getId_Empleado() {
-        return id_Empleado;
+        return idEmpleado;
     }
 
-    public void setId_Empleado(long id_Empleado) {
-        this.id_Empleado = id_Empleado;
+    public void setId_Empleado(long idEmpleado) {
+        this.idEmpleado = idEmpleado;
     }
 
     public String getNombreEmpl() {

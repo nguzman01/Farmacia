@@ -13,15 +13,15 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public List<Cliente> findAll() {
+    public List<Cliente> listarClientes() {
         return clienteRepository.findAll();
     }
 
-    public Optional<Cliente> findById(Long id) {
+    public Optional<Cliente> listarClientePorId(Long id) {
         return clienteRepository.findById(id);
     }
 
-    public Cliente save(Cliente cliente) {
+    public Cliente crearCliente(Cliente cliente) {
         if (cliente.getNombreCli() == null || cliente.getNombreCli().isEmpty()) {
             throw new IllegalArgumentException("El nombre del cliente es requerido");
         }
@@ -29,7 +29,7 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
-    public Cliente update(Long id, Cliente clienteDetails) {
+    public Cliente actualizarCliente(Long id, Cliente clienteDetails) {
         Optional<Cliente> optionalCliente = clienteRepository.findById(id);
         if (optionalCliente.isEmpty()) {
             return null;
@@ -48,7 +48,7 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
-    public void deleteById(Long id) {
+    public void eliminarClientePorId(Long id) {
         if (!clienteRepository.existsById(id)) {
             throw new IllegalArgumentException("El cliente con id " + id + " no existe.");
         }

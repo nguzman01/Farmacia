@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/marca")
+@RequestMapping("/api/marca")
 public class MarcaController {
 
     @Autowired
@@ -18,23 +18,23 @@ public class MarcaController {
 
     @GetMapping
     public List<Marca> getAll() {
-        return marcaService.findAll();
+        return marcaService.listarMarcas();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Marca> getById(@PathVariable Integer id) {
-        Optional<Marca> marca = marcaService.findById(id);
+        Optional<Marca> marca = marcaService.listarMarcaPorId(id);
         return marca.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Marca create(@RequestBody Marca marca) {
-        return marcaService.save(marca);
+        return marcaService.crearMarca(marca);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Marca> update(@PathVariable Integer id, @RequestBody Marca marcaDetails) {
-        Marca updatedMarca = marcaService.update(id, marcaDetails);
+        Marca updatedMarca = marcaService.actualizarMarca(id, marcaDetails);
         if (updatedMarca == null) {
             return ResponseEntity.notFound().build();
         }
@@ -43,7 +43,7 @@ public class MarcaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        marcaService.deleteById(id);
+        marcaService.eliminarMarcaPorId(id);
         return ResponseEntity.noContent().build();
     }
 }

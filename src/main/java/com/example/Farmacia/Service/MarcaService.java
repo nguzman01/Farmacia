@@ -14,15 +14,15 @@ public class MarcaService {
     @Autowired
     private MarcaRepository marcaRepository;
 
-    public List<Marca> findAll() {
+    public List<Marca> listarMarcas() {
         return marcaRepository.findAll();
     }
 
-    public Optional<Marca> findById(Integer id) {
+    public Optional<Marca> listarMarcaPorId(Integer id) {
         return marcaRepository.findById(id);
     }
 
-    public Marca save(Marca marca) {
+    public Marca crearMarca(Marca marca) {
         if (marca.getNombreMarc() == null || marca.getNombreMarc().trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre de la marca es requerido.");
         }
@@ -32,7 +32,7 @@ public class MarcaService {
         return marcaRepository.save(marca);
     }
 
-    public Marca update(Integer id, Marca marcaDetails) {
+    public Marca actualizarMarca(Integer id, Marca marcaDetails) {
         Optional<Marca> optionalMarca = marcaRepository.findById(id);
         if (optionalMarca.isEmpty()) {
             return null;
@@ -53,7 +53,7 @@ public class MarcaService {
         return marcaRepository.save(marca);
     }
 
-    public void deleteById(Integer id) {
+    public void eliminarMarcaPorId(Integer id) {
         if (!marcaRepository.existsById(id)) {
             throw new IllegalArgumentException("La marca con id " + id + " no existe.");
         }

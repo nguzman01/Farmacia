@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 @RestController
-@RequestMapping("/categoria")
+@RequestMapping("/api/categoria")
 public class CategoriaController {
 
     @Autowired
@@ -18,23 +18,23 @@ public class CategoriaController {
     // lista
     @GetMapping
     public List<Categoria> getAll() {
-        return categoriaService.findAll();
+        return categoriaService.listarCategoria();
     }
     // lista por id
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> getById(@PathVariable Integer id) {
-        Optional<Categoria> categoria = categoriaService.findById(id);
+        Optional<Categoria> categoria = categoriaService.listarCategoriaPorId(id);
         return categoria.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     //crea
     @PostMapping
     public Categoria create(@RequestBody Categoria categoria) {
-        return categoriaService.save(categoria);
+        return categoriaService.crearCategoria(categoria);
     }
     // actualiza
     @PutMapping("/{id}")
     public ResponseEntity<Categoria> update(@PathVariable Integer id, @RequestBody Categoria categoriaDetails) {
-        Categoria updatedCategoria = categoriaService.update(id, categoriaDetails);
+        Categoria updatedCategoria = categoriaService.actualizarCategoria(id, categoriaDetails);
         if (updatedCategoria == null) {
             return ResponseEntity.notFound().build();
         }
@@ -43,7 +43,7 @@ public class CategoriaController {
     //elimina
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        categoriaService.deleteById(id);
+        categoriaService.eliminarCategoriaPorId(id);
         return ResponseEntity.noContent().build();
     }
 }

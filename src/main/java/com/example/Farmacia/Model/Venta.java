@@ -16,12 +16,14 @@ public class Venta {
     private LocalDate fechaVenta;
     private LocalTime horaVenta;
     private Double total;
+    private String nombreEmpl; // Solo el nombre del empleado
 
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.PERSIST)  // Permite que se persistan automáticamente las entidades Cliente y Empleado
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)  // Permite que se persistan automáticamente las entidades Cliente y Empleado
     @JoinColumn(name = "id_empleado")
     private Empleado empleado;
 
@@ -30,15 +32,16 @@ public class Venta {
     public Venta() {
     }
 
-    public Venta(long id_Venta, LocalDate fechaVenta, LocalTime horaVenta, Double total, Cliente cliente, Empleado empleado) {
+    public Venta(long id_Venta, LocalDate fechaVenta, LocalTime horaVenta, Double total, String nombreEmpl, Cliente cliente, Empleado empleado) {
         this.id_Venta = id_Venta;
         this.fechaVenta = fechaVenta;
         this.horaVenta = horaVenta;
         this.total = total;
+        this.nombreEmpl = nombreEmpl;
         this.cliente = cliente;
         this.empleado = empleado;
     }
-    // Getters y setters
+// Getters y setters
 
 
     public long getId_Venta() {
@@ -71,6 +74,14 @@ public class Venta {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public String getNombreEmpl() {
+        return nombreEmpl;
+    }
+
+    public void setNombreEmpl(String nombreEmpl) {
+        this.nombreEmpl = nombreEmpl;
     }
 
     public Cliente getCliente() {

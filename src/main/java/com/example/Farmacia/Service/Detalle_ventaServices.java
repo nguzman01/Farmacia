@@ -13,15 +13,15 @@ public class Detalle_ventaServices {
     @Autowired
     private Detalle_ventaRepository detalleVentaRepository;
 
-    public List<Detalle_venta> findAll() {
+    public List<Detalle_venta> listarDetalleVentas() {
         return detalleVentaRepository.findAll();
     }
 
-    public Optional<Detalle_venta> findById(Long id) {
+    public Optional<Detalle_venta> listarDetalleVentaPorId(Long id) {
         return detalleVentaRepository.findById(id);
     }
 
-    public Detalle_venta save(Detalle_venta detalleVenta) {
+    public Detalle_venta crearDetalleVenta(Detalle_venta detalleVenta) {
         if (detalleVenta.getSubtotal() == null || detalleVenta.getSubtotal() < 0) {
             throw new IllegalArgumentException("El subtotal debe ser mayor o igual a cero.");
         }
@@ -34,7 +34,7 @@ public class Detalle_ventaServices {
         return detalleVentaRepository.save(detalleVenta);
     }
 
-    public Detalle_venta update(Long id, Detalle_venta detalleVentaDetails) {
+    public Detalle_venta actualizarDetalleVenta(Long id, Detalle_venta detalleVentaDetails) {
         Optional<Detalle_venta> optionalDetalleVenta = detalleVentaRepository.findById(id);
         if (optionalDetalleVenta.isEmpty()) {
             return null;
@@ -58,7 +58,7 @@ public class Detalle_ventaServices {
         return detalleVentaRepository.save(detalleVenta);
     }
 
-    public void deleteById(Long id) {
+    public void eliminarDetalleVentaPorId(Long id) {
         if (!detalleVentaRepository.existsById(id)) {
             throw new IllegalArgumentException("El detalle de venta con id " + id + " no existe.");
         }

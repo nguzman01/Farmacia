@@ -14,15 +14,15 @@ public class LoteService {
     @Autowired
     private LoteRepository loteRepository;
 
-    public List<Lote> findAll() {
+    public List<Lote> listarLotes() {
         return loteRepository.findAll();
     }
 
-    public Optional<Lote> findById(Integer id) {
+    public Optional<Lote> listarLotePorId(Integer id) {
         return loteRepository.findById(id);
     }
 
-    public Lote save(Lote lote) {
+    public Lote crearLote(Lote lote) {
         if (lote.getCantidad() == null || lote.getCantidad() < 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor o igual a cero.");
         }
@@ -38,7 +38,7 @@ public class LoteService {
         return loteRepository.save(lote);
     }
 
-    public Lote update(Integer id, Lote loteDetails) {
+    public Lote actualizarLote(Integer id, Lote loteDetails) {
         Optional<Lote> optionalLote = loteRepository.findById(id);
         if (optionalLote.isEmpty()) {
             return null;
@@ -66,7 +66,7 @@ public class LoteService {
         return loteRepository.save(lote);
     }
 
-    public void deleteById(Integer id) {
+    public void eliminarLotePorId(Integer id) {
         if (!loteRepository.existsById(id)) {
             throw new IllegalArgumentException("El lote con id " + id + " no existe.");
         }

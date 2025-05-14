@@ -14,15 +14,15 @@ public class Detalle_compraServices {
     @Autowired
     private Detalle_compraRepository detalleCompraRepository;
 
-    public List<Detalle_compra> findAll() {
+    public List<Detalle_compra> listarDetalleCompras() {
         return detalleCompraRepository.findAll();
     }
 
-    public Optional<Detalle_compra> findById(Long id) {
+    public Optional<Detalle_compra> listarDetalleCompraPorId(Long id) {
         return detalleCompraRepository.findById(id);
     }
 
-    public Detalle_compra save(Detalle_compra detalleCompra) {
+    public Detalle_compra crearDetalleCompra(Detalle_compra detalleCompra) {
         if (detalleCompra.getCantidad() == null || detalleCompra.getCantidad() <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor que cero.");
         }
@@ -35,7 +35,7 @@ public class Detalle_compraServices {
         return detalleCompraRepository.save(detalleCompra);
     }
 
-    public Detalle_compra update(Long id, Detalle_compra detalleCompraDetails) {
+    public Detalle_compra actualizarDetalleCompra(Long id, Detalle_compra detalleCompraDetails) {
         Optional<Detalle_compra> optionalDetalleCompra = detalleCompraRepository.findById(id);
         if (optionalDetalleCompra.isEmpty()) {
             return null;
@@ -59,7 +59,7 @@ public class Detalle_compraServices {
         return detalleCompraRepository.save(detalleCompra);
     }
 
-    public void deleteById(Long id) {
+    public void eliminarDetalleCompraPorId(Long id) {
         if (!detalleCompraRepository.existsById(id)) {
             throw new IllegalArgumentException("El detalle compra con id " + id + " no existe.");
         }

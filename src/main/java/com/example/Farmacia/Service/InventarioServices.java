@@ -14,15 +14,15 @@ public class InventarioServices {
     @Autowired
     private InventarioRepository inventarioRepository;
 
-    public List<Inventario> findAll() {
+    public List<Inventario> listarInventarios() {
         return inventarioRepository.findAll();
     }
 
-    public Optional<Inventario> findById(Long id) {
+    public Optional<Inventario> listarInventarioPorId(Long id) {
         return inventarioRepository.findById(id);
     }
 
-    public Inventario save(Inventario inventario) {
+    public Inventario crearInventario(Inventario inventario) {
         if (inventario.getExistencias() == null || inventario.getExistencias() < 0) {
             throw new IllegalArgumentException("Las existencias deben ser mayores o iguales a cero.");
         }
@@ -35,7 +35,7 @@ public class InventarioServices {
         return inventarioRepository.save(inventario);
     }
 
-    public Inventario update(Long id, Inventario inventarioDetails) {
+    public Inventario 	actualizarInventario(Long id, Inventario inventarioDetails) {
         Optional<Inventario> optionalInventario = inventarioRepository.findById(id);
         if (optionalInventario.isEmpty()) {
             return null;
@@ -59,7 +59,7 @@ public class InventarioServices {
         return inventarioRepository.save(inventario);
     }
 
-    public void deleteById(Long id) {
+    public void eliminarInventarioPorId(Long id) {
         if (!inventarioRepository.existsById(id)) {
             throw new IllegalArgumentException("El inventario con id " + id + " no existe.");
         }

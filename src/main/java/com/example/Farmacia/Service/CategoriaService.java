@@ -14,22 +14,22 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    public List<Categoria> findAll() {
+    public List<Categoria> listarCategoria() {
         return categoriaRepository.findAll();
     }
 
-    public Optional<Categoria> findById(long id) {
+    public Optional<Categoria> listarCategoriaPorId(long id) {
         return categoriaRepository.findById(id);
     }
 
-    public Categoria save(Categoria categoria) {
+    public Categoria crearCategoria(Categoria categoria) {
         if (categoria.getNombreCat() == null || categoria.getNombreCat().trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre de la categoría es requerido.");
         }
         return categoriaRepository.save(categoria);
     }
 
-    public Categoria update(long id, Categoria categoriaDetails) {
+    public Categoria actualizarCategoria(long id, Categoria categoriaDetails) {
         Optional<Categoria> optionalCategoria = categoriaRepository.findById(id);
         if (optionalCategoria.isEmpty()) {
             return null;
@@ -45,7 +45,7 @@ public class CategoriaService {
         return categoriaRepository.save(categoria);
     }
 
-    public void deleteById(long id) {
+    public void eliminarCategoriaPorId(long id) {
         if (!categoriaRepository.existsById(id)) {
             throw new IllegalArgumentException("La categoría con id " + id + " no existe.");
         }

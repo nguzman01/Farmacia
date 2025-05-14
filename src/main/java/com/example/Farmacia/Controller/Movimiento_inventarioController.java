@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/movimiento-inventario")
+@RequestMapping("/api/movimiento-inventario")
 public class Movimiento_inventarioController {
 
     @Autowired
@@ -18,23 +18,23 @@ public class Movimiento_inventarioController {
 
     @GetMapping
     public List<Movimiento_inventario> getAll() {
-        return movimientoInventarioService.findAll();
+        return movimientoInventarioService.listarMovimientosInventario();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Movimiento_inventario> getById(@PathVariable Long id) {
-        Optional<Movimiento_inventario> movimiento = movimientoInventarioService.findById(id);
+        Optional<Movimiento_inventario> movimiento = movimientoInventarioService.listarMovimientoInventarioPorId(id);
         return movimiento.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Movimiento_inventario create(@RequestBody Movimiento_inventario movimiento) {
-        return movimientoInventarioService.save(movimiento);
+        return movimientoInventarioService.crearMovimientoInventario(movimiento);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Movimiento_inventario> update(@PathVariable Long id, @RequestBody Movimiento_inventario movimientoDetails) {
-        Movimiento_inventario updatedMovimiento = movimientoInventarioService.update(id, movimientoDetails);
+        Movimiento_inventario updatedMovimiento = movimientoInventarioService.actualizarMovimientoInventario(id, movimientoDetails);
         if (updatedMovimiento == null) {
             return ResponseEntity.notFound().build();
         }
@@ -43,7 +43,7 @@ public class Movimiento_inventarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        movimientoInventarioService.deleteById(id);
+        movimientoInventarioService.eliminarMovimientoInventarioPorId(id);
         return ResponseEntity.noContent().build();
     }
 

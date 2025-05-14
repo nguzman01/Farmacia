@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/empleado")
+@RequestMapping("/api/empleado")
 public class EmpleadoController {
 
     @Autowired
@@ -18,23 +18,24 @@ public class EmpleadoController {
 
     @GetMapping
     public List<Empleado> getAll() {
-        return empleadoService.findAll();
+        return empleadoService.obtenerTodosLosEmpleados();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Empleado> getById(@PathVariable Long id) {
-        Optional<Empleado> empleado = empleadoService.findById(id);
+        Optional<Empleado> empleado = empleadoService.buscarEmpleadoPorId(id);
         return empleado.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Empleado create(@RequestBody Empleado empleado) {
-        return empleadoService.save(empleado);
+        return empleadoService.crearEmpleado(empleado);
     }
+
     // actualiza
     @PutMapping("/{id}")
     public ResponseEntity<Empleado> update(@PathVariable Long id, @RequestBody Empleado empleadoDetails) {
-        Empleado updatedEmpleado = empleadoService.update(id, empleadoDetails);
+        Empleado updatedEmpleado = empleadoService.actualizarEmpleado(id, empleadoDetails);
         if (updatedEmpleado == null) {
             return ResponseEntity.notFound().build();
         }
@@ -43,7 +44,7 @@ public class EmpleadoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        empleadoService.deleteById(id);
+        empleadoService.eliminarEmpleado(id);
         return ResponseEntity.noContent().build();
     }
 }

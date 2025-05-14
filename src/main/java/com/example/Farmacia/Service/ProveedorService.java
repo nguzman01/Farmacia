@@ -13,22 +13,22 @@ public class ProveedorService {
     @Autowired
     private ProveedorRepository proveedorRepository;
 
-    public List<Proveedor> findAll() {
+    public List<Proveedor> 	listarProveedores() {
         return proveedorRepository.findAll();
     }
 
-    public Optional<Proveedor> findById(Long id) {
+    public Optional<Proveedor> listarProveedorPorId(Long id) {
         return proveedorRepository.findById(id);
     }
 
-    public Proveedor save(Proveedor proveedor) {
+    public Proveedor crearProveedor(Proveedor proveedor) {
         if (proveedor.getNombreProv() == null || proveedor.getNombreProv().trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del proveedor es requerido.");
         }
         return proveedorRepository.save(proveedor);
     }
 
-    public Proveedor update(Long id, Proveedor proveedorDetails) {
+    public Proveedor actualizarProveedor(Long id, Proveedor proveedorDetails) {
         Optional<Proveedor> optionalProveedor = proveedorRepository.findById(id);
         if (optionalProveedor.isEmpty()) {
             return null;
@@ -46,7 +46,7 @@ public class ProveedorService {
         return proveedorRepository.save(proveedor);
     }
 
-    public void deleteById(Long id) {
+    public void eliminarProveedorPorId(Long id) {
         if (!proveedorRepository.existsById(id)) {
             throw new IllegalArgumentException("El proveedor con id " + id + " no existe.");
         }

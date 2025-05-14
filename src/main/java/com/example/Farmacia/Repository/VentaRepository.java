@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface VentaRepository extends JpaRepository<Venta, Long>{
     //ventas que ha hecho un empleado
-    List<Venta> findByEmpleadoId_Empleado(Long id_Empleado);
+
+    List<Venta> findByEmpleado_IdEmpleado(Long idEmpleado);
+
 }

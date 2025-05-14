@@ -13,15 +13,15 @@ public class EmpleadoService {
     @Autowired
     private EmpleadoRepository empleadoRepository;
 
-    public List<Empleado> findAll() {
+    public List<Empleado> obtenerTodosLosEmpleados() {
         return empleadoRepository.findAll();
     }
 
-    public Optional<Empleado> findById(Long id) {
+    public Optional<Empleado> buscarEmpleadoPorId(Long id) {
         return empleadoRepository.findById(id);
     }
 
-    public Empleado save(Empleado empleado) {
+    public Empleado crearEmpleado(Empleado empleado) {
         if (empleado.getNombreEmpl() == null || empleado.getNombreEmpl().trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del empleado es requerido.");
         }
@@ -33,7 +33,7 @@ public class EmpleadoService {
         return empleadoRepository.save(empleado);
     }
 
-    public Empleado update(Long id, Empleado empleadoDetails) {
+    public Empleado actualizarEmpleado(Long id, Empleado empleadoDetails) {
         Optional<Empleado> optionalEmpleado = empleadoRepository.findById(id);
         if (optionalEmpleado.isEmpty()) {
             return null;
@@ -58,7 +58,7 @@ public class EmpleadoService {
         return empleadoRepository.save(empleado);
     }
 
-    public void deleteById(Long id) {
+    public void eliminarEmpleado(Long id) {
         if (!empleadoRepository.existsById(id)) {
             throw new IllegalArgumentException("El empleado con id " + id + " no existe.");
         }

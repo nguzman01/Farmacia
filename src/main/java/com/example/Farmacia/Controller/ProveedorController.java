@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 @RestController
-@RequestMapping("/proveedor")
+@RequestMapping("/api/proveedor")
 public class ProveedorController {
 
 
@@ -18,23 +18,23 @@ public class ProveedorController {
 
     @GetMapping
     public List<Proveedor> getAll() {
-        return proveedorService.findAll();
+        return proveedorService.listarProveedores();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Proveedor> getById(@PathVariable Long id) {
-        Optional<Proveedor> proveedor = proveedorService.findById(id);
+        Optional<Proveedor> proveedor = proveedorService.listarProveedorPorId(id);
         return proveedor.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public Proveedor create(@RequestBody Proveedor proveedor) {
-        return proveedorService.save(proveedor);
+        return proveedorService.crearProveedor(proveedor);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Proveedor> update(@PathVariable Long id, @RequestBody Proveedor proveedorDetails) {
-        Proveedor updatedProveedor = proveedorService.update(id, proveedorDetails);
+        Proveedor updatedProveedor = proveedorService.actualizarProveedor(id, proveedorDetails);
         if (updatedProveedor == null) {
             return ResponseEntity.notFound().build();
         }
@@ -43,7 +43,7 @@ public class ProveedorController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        proveedorService.deleteById(id);
+        proveedorService.eliminarProveedorPorId(id);
         return ResponseEntity.noContent().build();
     }
 }
