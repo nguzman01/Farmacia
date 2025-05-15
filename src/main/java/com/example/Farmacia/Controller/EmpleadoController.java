@@ -29,7 +29,12 @@ public class EmpleadoController {
 
     @PostMapping
     public Empleado create(@RequestBody Empleado empleado) {
-        return empleadoService.crearEmpleado(empleado);
+        try {
+            return empleadoService.crearEmpleado(empleado);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     // actualiza
