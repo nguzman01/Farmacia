@@ -7,7 +7,7 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_Cliente;
+    private long id_Cliente;
 
     @Column(length = 50)
     private String nombreCli;
@@ -26,22 +26,21 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(Long id_Cliente, String nombreCli, String direccionCli, String emailCli, String telefonoCli) {
+    public Cliente(long id_Cliente, String nombreCli, String direccionCli, String emailCli, String telefonoCli) {
         this.id_Cliente = id_Cliente;
         this.nombreCli = nombreCli;
         this.direccionCli = direccionCli;
         this.emailCli = emailCli;
         this.telefonoCli = telefonoCli;
     }
-
     // Getters y setters
 
 
-    public Long getId_Cliente() {
+    public long getId_Cliente() {
         return id_Cliente;
     }
 
-    public void setId_Cliente(Long id_Cliente) {
+    public void setId_Cliente(long id_Cliente) {
         this.id_Cliente = id_Cliente;
     }
 

@@ -8,7 +8,7 @@ public class Proveedor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idProveedor;
+    private long idProveedor;
 
     @Column(length = 50)
     private String nombreProv;
@@ -24,20 +24,21 @@ public class Proveedor {
     public Proveedor() {
     }
 
-    public Proveedor(Long idProveedor, String nombreProv, String direccionProv, String telefonoProv) {
+    public Proveedor(long idProveedor, String nombreProv, String direccionProv, String telefonoProv) {
         this.idProveedor = idProveedor;
         this.nombreProv = nombreProv;
         this.direccionProv = direccionProv;
         this.telefonoProv = telefonoProv;
     }
+
     // Getters y setters
 
 
-    public Long getIdProveedor() {
+    public long getIdProveedor() {
         return idProveedor;
     }
 
-    public void setIdProveedor(Long idProveedor) {
+    public void setIdProveedor(long idProveedor) {
         this.idProveedor = idProveedor;
     }
 

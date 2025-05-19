@@ -14,11 +14,11 @@ public class MedicamentosService {
     @Autowired
     private MedicamentosRepository medicamentosRepository;
 
-    public List<Medicamentos> listarMedicamentos() {
+    public List<Medicamentos> obtenerTodosLosEmpleados() {
         return medicamentosRepository.findAll();
     }
 
-    public Optional<Medicamentos> buscarMedicamentoPorId(Integer id) {
+    public Optional<Medicamentos> buscarMedicamentoPorId(Long id) {
         return medicamentosRepository.findById(id);
     }
 
@@ -37,7 +37,7 @@ public class MedicamentosService {
         return medicamentosRepository.save(medicamento);
     }
 
-    public Medicamentos actualizarMedicamento(Integer id, Medicamentos medicamentoDetails) {
+    public Medicamentos actualizarMedicamento(Long id, Medicamentos medicamentoDetails) {
         Optional<Medicamentos> optionalMedicamento = medicamentosRepository.findById(id);
         if (optionalMedicamento.isEmpty()) {
             return null;
@@ -66,7 +66,7 @@ public class MedicamentosService {
         return medicamentosRepository.save(medicamento);
     }
 
-    public void EliminarMedicamento(Integer id) {
+    public void EliminarMedicamento(Long id) {
         if (!medicamentosRepository.existsById(id)) {
             throw new IllegalArgumentException("El medicamento con id " + id + " no existe.");
         }
@@ -90,9 +90,7 @@ public class MedicamentosService {
         return medicamentosRepository.findByMarca_Proveedor_NombreProv(nombreProv);
     }
 
-
-
-    public void deleteById(Integer id) {
+    public void eliminarMedicamentoPorId(Long id) {
         if (!medicamentosRepository.existsById(id)) {
             throw new IllegalArgumentException("El medicamento con id " + id + " no existe.");
         }

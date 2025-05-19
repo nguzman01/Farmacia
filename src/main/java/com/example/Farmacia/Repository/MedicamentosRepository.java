@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MedicamentosRepository extends JpaRepository<Medicamentos, Integer> {
+public interface MedicamentosRepository extends JpaRepository<Medicamentos, Long> {
     //listar los medicamentos por id de categoria
     List<Medicamentos> findByCategoria_IdCategoria(Long idCategoria);
 
