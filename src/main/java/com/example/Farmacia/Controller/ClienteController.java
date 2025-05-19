@@ -1,6 +1,7 @@
 package com.example.Farmacia.Controller;
 
 import com.example.Farmacia.Model.Cliente;
+import com.example.Farmacia.Model.Empleado;
 import com.example.Farmacia.Service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class ClienteController {
 
     @GetMapping
     public List<Cliente> getAll() {
-        return clienteService.listarClientes();
+        return clienteService.obtenerTodosLosEmpleados(); //obtenerTodosLosClientes
     }
     // lista por id
     @GetMapping("/{id}")
@@ -27,9 +28,19 @@ public class ClienteController {
         return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+   /* @PostMapping
     public Cliente create(@RequestBody Cliente cliente) {
         return clienteService.crearCliente(cliente);
+    }*/
+    @PostMapping
+    public Cliente create(@RequestBody Cliente cliente) {
+        System.out.println("Cliente recibido: " + cliente);
+        try {
+            return clienteService.crearCliente(cliente);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al crear cliente",e);
+        }
+
     }
     //actualiza
     @PutMapping("/{id}")

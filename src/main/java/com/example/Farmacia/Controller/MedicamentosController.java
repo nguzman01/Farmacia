@@ -19,11 +19,11 @@ public class MedicamentosController {
 
     @GetMapping
     public List<Medicamentos> getAll() {
-        return medicamentosService.listarMedicamentos();
+        return medicamentosService.obtenerTodosLosEmpleados();
     }
 
     @GetMapping("api/medicamentos/{id}")
-    public ResponseEntity<Medicamentos> getById(@PathVariable Integer id) {
+    public ResponseEntity<Medicamentos> getById(@PathVariable Long id) {
         Optional<Medicamentos> medicamento = medicamentosService.buscarMedicamentoPorId(id);
         return medicamento.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -55,7 +55,7 @@ public class MedicamentosController {
     }
 
     @PutMapping("api/medicamentos/{id}")
-    public ResponseEntity<Medicamentos> update(@PathVariable Integer id, @RequestBody Medicamentos medicamentoDetails) {
+    public ResponseEntity<Medicamentos> update(@PathVariable Long id, @RequestBody Medicamentos medicamentoDetails) {
         Medicamentos updatedMedicamento = medicamentosService.actualizarMedicamento(id, medicamentoDetails);
         if (updatedMedicamento == null) {
             return ResponseEntity.notFound().build();
@@ -64,8 +64,8 @@ public class MedicamentosController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        medicamentosService.EliminarMedicamento(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        medicamentosService.eliminarMedicamentoPorId(id);
         return ResponseEntity.noContent().build();
     }
 

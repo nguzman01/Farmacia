@@ -1,19 +1,21 @@
 package com.example.Farmacia.Service;
 
 import com.example.Farmacia.Model.Cliente;
+import com.example.Farmacia.Model.Empleado;
 import com.example.Farmacia.Repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public List<Cliente> listarClientes() {
+    public List<Cliente> obtenerTodosLosEmpleados() {
         return clienteRepository.findAll();
     }
 
@@ -22,12 +24,13 @@ public class ClienteService {
     }
 
     public Cliente crearCliente(Cliente cliente) {
-        if (cliente.getNombreCli() == null || cliente.getNombreCli().isEmpty()) {
+        if (cliente.getNombreCli() == null || cliente.getNombreCli().trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del cliente es requerido");
         }
         // podrías agregar más validaciones a otros campos
         return clienteRepository.save(cliente);
     }
+
 
     public Cliente actualizarCliente(Long id, Cliente clienteDetails) {
         Optional<Cliente> optionalCliente = clienteRepository.findById(id);

@@ -10,7 +10,7 @@ public class Detalle_venta {
     private long id_DetalleVenta;
     private Double subtotal;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_medicamento")
     private Medicamentos medicamento;
 
