@@ -9,12 +9,12 @@ public class Movimiento_inventario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_Movimiento;
+    private long idMovimiento;
 
     @Column(columnDefinition = "TEXT")
     private String tipoMovi; // ENTRADA o SALIDA
 
-    private Double cantidad;
+    private Integer cantidad;
     private LocalDate fechaMovi;
 
     @Column(length = 20)
@@ -24,13 +24,13 @@ public class Movimiento_inventario {
     @JoinColumn(name = "id_inventario")
     private Inventario inventario;
 
-    // constructor
+    // constructo
 
     public Movimiento_inventario() {
     }
 
-    public Movimiento_inventario(long id_Movimiento, String tipoMovi, Double cantidad, LocalDate fechaMovi, String referencia, Inventario inventario) {
-        this.id_Movimiento = id_Movimiento;
+    public Movimiento_inventario(long id_Movimiento, String tipoMovi, Integer cantidad, LocalDate fechaMovi, String referencia, Inventario inventario) {
+        this.idMovimiento = id_Movimiento;
         this.tipoMovi = tipoMovi;
         this.cantidad = cantidad;
         this.fechaMovi = fechaMovi;
@@ -41,12 +41,12 @@ public class Movimiento_inventario {
     // Getters y setters
 
 
-    public long getId_Movimiento() {
-        return id_Movimiento;
+    public long getIdMovimiento() {
+        return idMovimiento;
     }
 
-    public void setId_Movimiento(long id_Movimiento) {
-        this.id_Movimiento = id_Movimiento;
+    public void setIdMovimiento(long idMovimiento) {
+        this.idMovimiento = idMovimiento;
     }
 
     public String getTipoMovi() {
@@ -57,11 +57,11 @@ public class Movimiento_inventario {
         this.tipoMovi = tipoMovi;
     }
 
-    public Double getCantidad() {
+    public Integer getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Double cantidad) {
+    public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
 

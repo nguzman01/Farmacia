@@ -1,16 +1,16 @@
 package com.example.Farmacia.Service;
 
-import com.example.Farmacia.Model.Cliente;
-import com.example.Farmacia.Model.Empleado;
-import com.example.Farmacia.Model.Venta;
-import com.example.Farmacia.Repository.ClienteRepository;
-import com.example.Farmacia.Repository.EmpleadoRepository;
-import com.example.Farmacia.Repository.VentaRepository;
+import com.example.Farmacia.Model.*;
+import com.example.Farmacia.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class VentaServices {
 
@@ -22,6 +22,12 @@ public class VentaServices {
 
     @Autowired
     private EmpleadoRepository empleadoRepository;
+
+    @Autowired
+    private MedicamentosRepository medicamentosRepository;
+
+    @Autowired
+    private Detalle_ventaRepository detalleVentaRepository;
 
     // Listar todas las ventas
     public List<Venta> listarVentas() {
@@ -39,7 +45,7 @@ public class VentaServices {
 
     // Listar una venta por ID
     public Optional<Venta> listarVentaPorId(Long id) {
-        Optional<Venta> venta = ventaRepository.findById(id);
+        Optional<Venta> venta = ventaRepository.findByIdWithMedicamentos(id);
 
         // Si la venta existe, agregamos el nombre del empleado
         venta.ifPresent(v -> {
@@ -51,25 +57,46 @@ public class VentaServices {
         return venta;
     }
 
-    // Crear una nueva venta
+
     public Venta crearVenta(Venta venta) {
-        // Verificar si el cliente existe
         Cliente cliente = clienteRepository.findById(venta.getCliente().getId_Cliente())
-                .orElseThrow(() -> new IllegalArgumentException("El cliente con ID " + venta.getCliente().getId_Cliente() + " no existe."));
+                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado"));
 
-        // Verificar si el empleado existe
         Empleado empleado = empleadoRepository.findById(venta.getEmpleado().getId_Empleado())
-                .orElseThrow(() -> new IllegalArgumentException("El empleado con ID " + venta.getEmpleado().getId_Empleado() + " no existe."));
+                .orElseThrow(() -> new IllegalArgumentException("Empleado no encontrado"));
 
-        // Establecer cliente y empleado en la venta
         venta.setCliente(cliente);
         venta.setEmpleado(empleado);
-
-        // Establecer el nombre del empleado (para mostrarlo en el JSON de respuesta)
         venta.setNombreEmpl(empleado.getNombreEmpl());
 
-        // Guardar la venta
+        // Guardar primero la venta para tener su ID
+      //  Venta ventaGuardada = ventaRepository.save(venta);
+
+        // Si se pasan medicamentos, cargarlos desde la BD y asociarlos a la venta
+        if (venta.getMedicamentos() != null && !venta.getMedicamentos().isEmpty()) {
+            List<Medicamentos> medicamentosActualizados = new ArrayList<>();
+
+            for (Medicamentos med : venta.getMedicamentos()) {
+                Medicamentos medExistente = medicamentosRepository.findById(med.getIdMedicamento())
+                        .orElseThrow(() -> new IllegalArgumentException("Medicamento con ID " + med.getIdMedicamento() + " no encontrado"));
+
+                medExistente.setVenta(venta); // Asignar la venta al medicamento
+                medicamentosActualizados.add(medExistente);
+            }
+
+            venta.setMedicamentos(medicamentosActualizados); // Reemplazar lista con objetos persistentes
+        }
+        //colocado
+
+        if (venta.getTotal() != null) {
+            BigDecimal totalRedondeado = venta.getTotal().setScale(2, RoundingMode.HALF_UP);
+            venta.setTotal(totalRedondeado);
+        }
+        //colocado
+
         return ventaRepository.save(venta);
+
+
     }
 
     // Actualizar una venta existente
@@ -89,19 +116,43 @@ public class VentaServices {
         if (ventaDetails.getEmpleado() == null) {
             throw new IllegalArgumentException("El empleado es requerido.");
         }
-        if (ventaDetails.getTotal() == null || ventaDetails.getTotal() < 0) {
+       /* if (ventaDetails.getTotal() == null || ventaDetails.getTotal() < 0) {
+            throw new IllegalArgumentException("El total debe ser mayor o igual a cero.");
+        }*/
+        if (ventaDetails.getTotal() == null || ventaDetails.getTotal().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("El total debe ser mayor o igual a cero.");
         }
 
         venta.setFechaVenta(ventaDetails.getFechaVenta());
         venta.setHoraVenta(ventaDetails.getHoraVenta());
-        venta.setTotal(ventaDetails.getTotal());
+        //colocado
+        // Redondear el total a 2 decimales antes de asignarlo
+        BigDecimal totalRedondeado = ventaDetails.getTotal().setScale(2, RoundingMode.HALF_UP);
+        venta.setTotal(totalRedondeado);
+        //colocado
+
+        //venta.setTotal(ventaDetails.getTotal());
         venta.setCliente(ventaDetails.getCliente());
         venta.setEmpleado(ventaDetails.getEmpleado());
         venta.setNombreEmpl(ventaDetails.getEmpleado().getNombreEmpl()); // Actualizar nombreEmpleado
 
+        //  asignar la venta a los medicamentos al actualizar
+        if (ventaDetails.getMedicamentos() != null) {
+// Eliminar medicamentos antiguos si es necesario
+            //venta.getMedicamentos().clear();
+            for (Medicamentos med : ventaDetails.getMedicamentos()) {
+                med.setVenta(venta);
+            }
+            venta.setMedicamentos(ventaDetails.getMedicamentos());
+        }
+
         return ventaRepository.save(venta);
     }
+
+    public Optional<Venta> obtenerVentaConMedicamentos(Long id) {
+        return ventaRepository.findByIdWithMedicamentos(id);
+    }
+
 
     // Eliminar una venta por ID
     public void eliminarVentaPorId(Long id) {
@@ -109,5 +160,28 @@ public class VentaServices {
             throw new IllegalArgumentException("La venta con id " + id + " no existe.");
         }
         ventaRepository.deleteById(id);
+    }
+
+    // Metodo de conversión
+    public VentaDTO convertirAVentaDTO(Venta venta, List<Detalle_venta> detallesVenta) {
+        List<DetalleVentaDTO> detallesDTO = detallesVenta.stream().map(detalle ->
+                new DetalleVentaDTO(
+                        detalle.getId_DetalleVenta(),
+                        detalle.getMedicamento().getNombreMed(),
+                        detalle.getCantidad(),
+                        detalle.getSubtotal()
+                )
+        ).toList();
+
+        return new VentaDTO(
+                venta.getId_Venta(),
+                venta.getFechaVenta().toString(),  // Convertir LocalDate a String
+                venta.getTotal().doubleValue(),    // Convertir Double a double primitivo
+                detallesDTO,
+                venta.getCliente().getNombreCli(),  // Nombre cliente
+                venta.getCliente().getEmailCli(),    // Email cliente
+                venta.getCliente().getTelefonoCli(), // Teléfono cliente
+                venta.getEmpleado().getNombreEmpl()   // Nombre empleado
+        );
     }
 }

@@ -9,6 +9,7 @@ public class Detalle_venta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_DetalleVenta;
     private Double subtotal;
+    private Integer cantidad;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_medicamento")
@@ -18,19 +19,20 @@ public class Detalle_venta {
     @JoinColumn(name = "id_venta")
     private Venta venta;
 
+
     // constructores
 
     public Detalle_venta() {
     }
 
-    public Detalle_venta(long id_DetalleVenta, Double subtotal, Medicamentos medicamento, Venta venta) {
+    public Detalle_venta(long id_DetalleVenta, Double subtotal, Integer cantidad, Medicamentos medicamento, Venta venta) {
         this.id_DetalleVenta = id_DetalleVenta;
         this.subtotal = subtotal;
+        this.cantidad = cantidad;
         this.medicamento = medicamento;
         this.venta = venta;
     }
 // Getters y setters
-
 
     public long getId_DetalleVenta() {
         return id_DetalleVenta;
@@ -46,6 +48,14 @@ public class Detalle_venta {
 
     public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
     }
 
     public Medicamentos getMedicamento() {
