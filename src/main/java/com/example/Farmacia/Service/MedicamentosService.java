@@ -23,6 +23,7 @@ public class MedicamentosService {
     }
 
     public Medicamentos crearMedicamento(Medicamentos medicamento) {
+        // Validaciones básicas
         if (medicamento.getNombreMed() == null || medicamento.getNombreMed().trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del medicamento es requerido.");
         }

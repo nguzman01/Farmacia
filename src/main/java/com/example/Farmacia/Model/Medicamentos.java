@@ -1,5 +1,6 @@
 package com.example.Farmacia.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -37,13 +38,22 @@ public class Medicamentos {
             //(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
-
+/*
+    @ManyToOne
+   @JoinColumn(name = "id_venta")
+    private Venta venta;  // Esto permite la relación de muchos medicamentos con una venta
+*/
+@ManyToOne
+@JoinColumn(name = "venta_id", nullable = true)  // La relación con 'Venta' es opcional
+@JsonBackReference
+private Venta venta;
 
     // constructores
+
     public Medicamentos() {
     }
 
-    public Medicamentos(long idMedicamento, String nombreMed, LocalDate fechaRegistro, String presentacion, String descripcion, Double precio, String codigo, Marca marca, Categoria categoria) {
+    public Medicamentos(long idMedicamento, String nombreMed, LocalDate fechaRegistro, String presentacion, String descripcion, Double precio, String codigo, Marca marca, Categoria categoria, Venta venta) {
         this.idMedicamento = idMedicamento;
         this.nombreMed = nombreMed;
         this.fechaRegistro = fechaRegistro;
@@ -53,10 +63,9 @@ public class Medicamentos {
         this.codigo = codigo;
         this.marca = marca;
         this.categoria = categoria;
+        this.venta = venta;
     }
-
-    // Getters y setters
-
+// Getters y setters
 
     public long getIdMedicamento() {
         return idMedicamento;
@@ -128,5 +137,13 @@ public class Medicamentos {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public Venta getVenta() {
+        return venta;
+    }
+
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 }

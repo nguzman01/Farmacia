@@ -1,9 +1,12 @@
 package com.example.Farmacia.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 public class Venta {
@@ -15,7 +18,10 @@ public class Venta {
 
     private LocalDate fechaVenta;
     private LocalTime horaVenta;
-    private Double total;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal total;
+
+    //private Double total;
     private String nombreEmpl; // Solo el nombre del empleado
 
 
@@ -27,12 +33,15 @@ public class Venta {
     @JoinColumn(name = "id_empleado")
     private Empleado empleado;
 
-    //contructores
+   // Relación uno a muchos con Medicamento (o Producto si lo prefieres)
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Medicamentos> medicamentos;
 
     public Venta() {
     }
 
-    public Venta(long id_Venta, LocalDate fechaVenta, LocalTime horaVenta, Double total, String nombreEmpl, Cliente cliente, Empleado empleado) {
+    public Venta(long id_Venta, LocalDate fechaVenta, LocalTime horaVenta, BigDecimal total, String nombreEmpl, Cliente cliente, Empleado empleado, List<Medicamentos> medicamentos) {
         this.id_Venta = id_Venta;
         this.fechaVenta = fechaVenta;
         this.horaVenta = horaVenta;
@@ -40,9 +49,8 @@ public class Venta {
         this.nombreEmpl = nombreEmpl;
         this.cliente = cliente;
         this.empleado = empleado;
+        this.medicamentos = medicamentos;
     }
-// Getters y setters
-
 
     public long getId_Venta() {
         return id_Venta;
@@ -68,11 +76,11 @@ public class Venta {
         this.horaVenta = horaVenta;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
@@ -99,4 +107,15 @@ public class Venta {
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
     }
+
+    public List<Medicamentos> getMedicamentos() {
+        return medicamentos;
+    }
+
+    public void setMedicamentos(List<Medicamentos> medicamentos) {
+        this.medicamentos = medicamentos;
+    }
+
+
+
 }
